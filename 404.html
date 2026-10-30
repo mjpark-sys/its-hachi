@@ -8,6 +8,8 @@
   <title>앗, 길을 잃었치! · 잇츠하치 404</title>
   <base href="/">
   <script>if(location.protocol==='file:')document.querySelector('base').href=new URL('.',location.href).href;</script>
+  <!-- GitHub Pages 프로젝트 주소(…github.io/저장소이름/)에서는 사이트 루트가 /저장소이름/ 이므로 기준 경로를 맞춘다 -->
+  <script>if(/\.github\.io$/.test(location.hostname))document.querySelector('base').href='/'+location.pathname.split('/')[1]+'/';</script>
   <link rel="icon" href="favicon.ico">
   <link rel="stylesheet" href="fonts/pretendard/pretendard.css">
   <link rel="stylesheet" href="css/style.css">
