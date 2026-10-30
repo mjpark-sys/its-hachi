@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>하치의 순간들 — IT’S HACHI</title>
+<meta name="description" content="쿠첸 속 하치의 일상, 한 장 한 장 모아 보는 하치 아카이브.">
+<link rel="icon" href="favicon.svg"><link rel="stylesheet" href="fonts/pretendard/pretendard.css"><link rel="stylesheet" href="css/hachi-board.css">
+<script src="js/hachi-posts-extra.js" defer></script>
+<script src="js/hachi-board.js" defer></script>
+<link rel="stylesheet" href="css/layout.css">
+</head>
+<body>
+<header class="site-header">
+    <a class="logo" href="hachi-board.html" aria-label="IT'S HACHI CUCHEN — 처음으로"><img src="media/brand/logo.png" alt="" width="600" height="162" decoding="async"></a>
+    <p class="site-header__tagline">한 술씩, 하치의 세계가 넓어져</p>
+    <nav class="nav" aria-label="주요 메뉴">
+      <a href="https://www.cuchenmall.co.kr/shop/zin_z_world.php" target="_blank" rel="noopener">미토피아</a>
+      <a href="hachi-board.html" aria-current="page">쿠첸속 하치</a>
+      <a href="https://www.instagram.com/its.hachi.zip/" target="_blank" rel="noopener">잇츠하치</a>
+    </nav>
+  </header>
+<main data-mode="roll">
+<section id="stage" class="stage" aria-label="하치의 순간들">
+<div id="spiral" class="spiral"></div>
+</section>
+<div class="dock" id="dock">
+<p class="dock-hint" id="hint">마음에 드는 하치를 눌러 보세요</p>
+<div class="dock-list">
+<div class="filters" aria-label="콘텐츠 분류"><button class="active" data-filter="전체" aria-pressed="true">전체</button><button data-filter="하치" aria-pressed="false">하치 이야기</button><button data-filter="미토피아" aria-pressed="false">미토피아 친구들</button></div>
+<span id="count" aria-live="polite"></span>
+</div>
+<div class="dock-tools">
+<button id="pause" class="icon-btn" type="button" aria-pressed="false" aria-label="애니메이션 일시정지">Ⅱ</button>
+<div class="view-toggle" role="group" aria-label="보기 방식">
+<button id="view-roll" class="icon-btn" type="button" aria-pressed="true" aria-label="롤링으로 보기" title="롤링으로 보기"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="4" width="8" height="16" rx="1.6"/><path d="M5 7v10M2.5 9v6M19 7v10M21.5 9v6" stroke-linecap="round"/></svg></button>
+<button id="view-list" class="icon-btn" type="button" aria-pressed="false" aria-label="리스트로 보기" title="리스트로 보기"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="3.5" width="7" height="7" rx="1.6"/><rect x="13.5" y="3.5" width="7" height="7" rx="1.6"/><rect x="3.5" y="13.5" width="7" height="7" rx="1.6"/><rect x="13.5" y="13.5" width="7" height="7" rx="1.6"/></svg></button>
+</div>
+</div>
+</div>
+</main>
+<footer><img src="media/brand/logo.png" alt="IT'S HACHI"><p>매일 조금씩, 하치와 가까워지는 중.</p><small>© CUCHEN. ALL RIGHTS RESERVED.<br>게시글의 이미지와 문구는 쿠첸 공식 인스타그램 게시물을 기준으로 구성했습니다.</small></footer>
+<dialog id="post-modal" aria-labelledby="post-title"><button class="close" aria-label="게시글 닫기" type="button">×</button><div class="modal-layout"><div class="modal-media"><img id="post-image" src="media/board/hachi-01.webp" alt=""></div><div class="modal-copy"><div class="post-body"><p id="post-category" class="eyebrow"></p><h2 id="post-title"></h2><p id="post-caption"></p><p id="post-tags" class="tags"></p></div><div class="post-bottom"><nav class="post-pagination" aria-label="게시글 페이지"><button id="prev" class="page-direction" aria-label="이전 게시글"><span aria-hidden="true">←</span> PREV</button><div id="post-pages" class="post-pages"></div><button id="next" class="page-direction" aria-label="다음 게시글">NEXT <span aria-hidden="true">→</span></button></nav><a id="post-link" class="post-link" href="https://www.instagram.com/its.hachi.zip/" target="_blank" rel="noopener" aria-label="인스타그램에서 보기 (새 창)">인스타그램에서 보기</a></div></div></div></dialog>
+</body></html>

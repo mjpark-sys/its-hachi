@@ -1,0 +1,81 @@
+/* 섹션 2. 미토피아 이야기 (js/world.js)
+   화면 전체가 고른 이야기의 배경(이미지·영상)이고, 글은 왼쪽 아래, 썸네일 줄은 맨 아래에 항상 떠 있다.
+   크기를 바꾸려면 아래 변수만 고치면 된다. */
+.s-world {
+  --w-thumb: clamp(54px, 5.2vw, 84px);
+  background: #0f1512; color: #fff;
+}
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+.world { position: absolute; top: 0; right: 0; bottom: 0; left: 0; inset: 0; display: flex; flex-direction: column; justify-content: flex-end; overflow: hidden; touch-action: pan-y; }
+
+/* 배경: 고른 카드의 장면들. 장면이 바뀌면 부드럽게 겹쳐 바뀐다 */
+.world__media { position: absolute; top: 0; right: 0; bottom: 0; left: 0; inset: 0; overflow: hidden; }
+.world__card { position: absolute; top: 0; right: 0; bottom: 0; left: 0; inset: 0; opacity: 0; transition: opacity 1s ease; }
+.world__card.is-on { opacity: 1; }
+.world__layer { position: absolute; top: 0; right: 0; bottom: 0; left: 0; inset: 0; }
+.world__card.is-on { animation: world-drift 18s ease-in-out infinite alternate; }
+@keyframes world-drift { from { transform: scale(1); } to { transform: scale(1.06); } }
+.world__layer img, .world__layer svg, .world__layer video { display: block; width: 100%; height: 100%; object-fit: cover; user-select: none; }
+.world__shade { position: absolute; top: 0; right: 0; bottom: 0; left: 0; inset: 0; z-index: 1; pointer-events: none;
+  background: linear-gradient(0deg, rgba(8, 14, 11, .86) 0, rgba(8, 14, 11, .5) 34%, transparent 62%), linear-gradient(180deg, rgba(8, 14, 11, .62), transparent 28%); }
+
+/* 글: 왼쪽 아래 */
+.world__text { position: relative; z-index: 3; padding: 0 var(--gutter); }
+.world__text-in { width: min(100%, 580px); }
+.world__vtitle { margin: .3em 0 0; font-size: clamp(30px, 3.6vw, 56px); font-weight: 800; letter-spacing: -.04em; line-height: 1.15; text-shadow: 0 2px 18px rgba(0, 0, 0, .35); }
+.world__line { margin: .6em 0 0; min-height: 3.4em; font-size: clamp(15px, 1.35vw, 19px); line-height: 1.7; opacity: .96; text-shadow: 0 1px 12px rgba(0, 0, 0, .4); transition: opacity .25s; }
+.world__line.is-swap { opacity: 0; }
+.world__foot { display: flex; flex-wrap: wrap; align-items: center; gap: 14px; margin-top: 14px; min-height: 46px; }
+.world__link { border: 0; border-radius: 999px; padding: .65em 1.5em; font: inherit; font-size: 15px; font-weight: 800; cursor: pointer; text-decoration: none; }
+.world__link { background: var(--pink-deep); color: #fff; }
+.world__link[hidden] { display: none; }
+
+/* 썸네일 줄: 항상 맨 아래. 오른쪽 아래 버튼과 같은 높이에서 가운데에 놓인다 */
+.world__rail { position: relative; z-index: 3; display: flex; align-items: center; justify-content: center; gap: 14px; min-width: 0; padding: 0 var(--gutter) clamp(24px, 5vh, 52px); }
+.world__arrow { flex: none; width: 36px; height: 36px; border: 0; border-radius: 50%; cursor: pointer; display: grid; place-items: center; background: rgba(255, 255, 255, .2); color: #fff; backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); }
+.world__arrow svg { width: 50%; height: 50%; stroke: currentColor; fill: none; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
+.world__arrow:hover { background: rgba(255, 255, 255, .34); }
+.world__strip { display: flex; align-items: center; gap: clamp(10px, 1.2vw, 18px); overflow-x: auto; scrollbar-width: none; padding: 18px 10px 12px; min-width: 0; max-width: 100%; }
+.world__strip::-webkit-scrollbar { display: none; }
+.world__thumb { position: relative; flex: none; width: var(--w-thumb); aspect-ratio: 1; padding: 0; border: 0; background: none; cursor: pointer; transition: transform .3s cubic-bezier(.2, .7, .2, 1); }
+.world__thumb-art { position: relative; display: block; width: 100%; height: 100%; overflow: hidden; border-radius: 16%; opacity: .78; box-shadow: 0 0 0 2px rgba(255, 255, 255, .35); transition: box-shadow .25s, opacity .25s; }
+.world__thumb:hover .world__thumb-art { opacity: 1; }
+.world__thumb[aria-current="true"] { transform: scale(1.2); z-index: 1; }
+.world__thumb[aria-current="true"] .world__thumb-art { opacity: 1; box-shadow: 0 0 0 3px #fff, 0 10px 22px -8px rgba(0, 0, 0, .6); }
+.world__thumb[aria-current="true"] .s-world .scroll-cue--hero { color: #fff; }
+
+/* 섹션이 올라올 때 한 박자 늦게 떠오른다 */
+.world__text, .world__rail { opacity: 0; transform: translateY(24px); transition: opacity .8s ease, transform .9s cubic-bezier(.2, .7, .2, 1); will-change: opacity, transform; }
+.fp-section.is-in .world__text, .fp-section.is-in .world__rail { opacity: 1; transform: none; }
+.fp-section.is-in .world__rail { transition-delay: .12s; }
+html:not(.fp-active) .world__text, html:not(.fp-active) .world__rail { opacity: 1; transform: none; }
+
+/* 낮은 화면 */
+@media (max-height: 700px) {
+  .s-world { --w-thumb: clamp(46px, 4.4vw, 64px); }
+  .world__strip { padding-top: 14px; }
+  .world__vtitle { font-size: clamp(26px, 3vw, 40px); }
+  .world__line { min-height: 0; }
+}
+@media (max-width: 900px) { /* 모바일: 썸네일 줄은 오른쪽 아래 버튼 위로 올라오고, 글은 그 위에 놓인다 */
+@media (max-width: 760px) {
+  .s-world { --w-thumb: 54px; }
+  .world__text { padding: 0 20px 10px; }
+  .world__text-in { width: 100%; }
+  .world__vtitle { font-size: 28px; }
+  .world__line { font-size: 15px; }
+  .world__rail { gap: 6px; padding: 0 10px calc(env(safe-area-inset-bottom, 0px) + 74px); }
+  .world__arrow { width: 30px; height: 30px; }
+  .world__strip { padding: 16px 10px 6px; gap: 12px; }
+}
+@media (max-width: 760px) and (max-height: 700px) {
+  .s-world { --w-thumb: 46px; }
+  .world__rail { padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 62px); }
+  .world__strip { padding-top: 12px; }
+  .world__foot { margin-top: 8px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .world__card, .world__thumb, .world__text, .world__rail { transition: none; }
+  .world__card.is-on { animation: none; }
+}

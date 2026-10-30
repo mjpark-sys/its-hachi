@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>잇츠하치 — 몽글언덕</title>
+  <meta name="theme-color" content="#1d1218">
+  <link rel="icon" href="favicon.ico" sizes="48x48">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml" sizes="any">
+  <link rel="icon" href="favicon-32x32.png" type="image/png" sizes="32x32">
+  <link rel="preload" as="image" href="media/trailer/poster.webp">
+  <link rel="stylesheet" href="fonts/pretendard/pretendard.css">
+  <link rel="stylesheet" href="css/trailer.css">
+  <noscript><meta http-equiv="refresh" content="0;url=index.html?notrailer"></noscript>
+<link rel="stylesheet" href="css/layout.css">
+</head>
+<body>
+  <main class="trailer" data-trailer>
+    <header class="trailer__header" aria-label="잇츠하치">
+      <img src="media/brand/logo.png" alt="IT'S HACHI CUCHEN" width="600" height="162" fetchpriority="high">
+    </header>
+    <!-- 트레일러 영상 (소리가 있어서, 브라우저가 막으면 음소거로 시작하고 소리 켜기 버튼을 보여 준다) -->
+    <video class="trailer__video" src="media/trailer/trailer.mp4" poster="media/trailer/poster.webp" playsinline preload="auto" aria-hidden="true"></video>
+    <div class="trailer__scrim" aria-hidden="true"></div>
+
+    <!-- 자막: 두 줄씩 차례로 부드럽게 나타났다 사라진다 (속도는 js/trailer.js 맨 위 값으로 조절) -->
+    <div class="cues" aria-live="off">
+      <p class="cue cue--title"><span>밥김이 안개처럼 피어오르는 곳,</span><span class="cue__name">몽글언덕.</span></p>
+      <p class="cue"><span>솥 곁에 모여 사는 솥곁살이들,</span><span>안개 속에서 느릿느릿 하루를 열어요.</span></p>
+      <p class="cue"><span>하치가 아는 가장 따뜻한 세상은</span><span>바로 이 언덕이었어요.</span></p>
+      <p class="cue cue--last"><span>밥김이 피어오르면,</span><span>거기가 우리 집이치.</span></p>
+    </div>
+
+    <button class="tbtn tbtn--sound" type="button" data-sound hidden aria-pressed="false">
+      <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path class="ic-wave" d="M16 8.5a5 5 0 0 1 0 7M18.6 5.8a9 9 0 0 1 0 12.4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path class="ic-x" d="M16.5 9.5l5 5m0-5l-5 5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M3 9.5h3.6L11 5.5v13l-4.4-4H3z" fill="currentColor"/></svg>
+      <span data-sound-label>소리 켜기</span>
+    </button>
+    <button class="tbtn tbtn--skip" type="button" data-skip>건너뛰기 <i aria-hidden="true">→</i></button>
+
+    <!-- 자동 재생이 완전히 막힌 환경(저전력 모드 등)에서만 보인다 -->
+    <button class="tstart" type="button" data-start hidden><span>탭해서 시작하기</span></button>
+
+    <!-- 엔딩: 트레일러가 끝나면 흰 화면에 이끼 글자가 자라난다 (js/moss-text.js 가 그린다. 마우스를 올리면 잔디가 갈라진다). 버튼을 누르면 index.html -->
+    <section class="outro" data-outro aria-hidden="true">
+      <h1 class="outro__title">it&rsquo;s hachi</h1>
+      <canvas class="outro__canvas" aria-hidden="true"></canvas>
+      <button class="outro__go" type="button" data-go aria-label="하치 따라가기 — 메인 페이지로"><span>하치 따라가기</span><i aria-hidden="true"></i></button>
+    </section>
+    <div class="curtain" aria-hidden="true"></div>
+  </main>
+  <script src="js/moss-text.js"></script>
+  <script src="js/trailer.js"></script>
+</body>
+</html>

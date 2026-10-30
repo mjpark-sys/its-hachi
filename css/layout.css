@@ -1,0 +1,9 @@
+/* Shared content edges across the public pages. Backgrounds remain full width. */
+:root{--gutter:max(64px,5vw,calc((100vw - 1600px)/2))}
+@media(max-width:1199px){:root{--gutter:40px}}
+@media(max-width:767px){:root{--gutter:20px}}
+.site-header,.dock,.trailer__header{padding-inline:var(--gutter)}
+.stage{margin-inline:var(--gutter)}
+footer{padding-inline:var(--gutter)}
+/* Horizontal controls use the content edge; vertical spacing stays modest. */
+.tbtn{bottom:max(clamp(20px,4vw,48px),env(safe-area-inset-bottom))}

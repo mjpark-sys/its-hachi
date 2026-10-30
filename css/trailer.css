@@ -1,0 +1,149 @@
+/* 트레일러(인트로) 페이지 — 영상 + 가운데 자막 */
+:root { --ink: #3b2430; --gutter: clamp(18px, 4vw, 48px); }
+* { box-sizing: border-box; }
+html, body { margin: 0; height: 100%; background: #1d1218; overflow: hidden; }
+body {
+  font-family: "Pretendard Variable", "Pretendard", -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Malgun Gothic", "Noto Sans KR", system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased; color: #fff;
+}
+button { font: inherit; color: inherit; }
+
+.trailer { position: fixed; inset: 0; overflow: hidden; background: #1d1218; }
+/* 영상과 이끼 엔딩에 공통으로 표시하는 로고 전용 헤더. */
+.trailer__header {
+  position: absolute; inset: 0 0 auto; z-index: 9;
+  height: clamp(64px, 4.8vw, 92px);
+  display: flex; align-items: center;
+  padding: 0 clamp(20px, 4vw, 56px);
+  pointer-events: none;
+}
+.trailer__header img {
+  display: block; height: clamp(26px, 1.77vw, 36px); width: auto;
+  filter: brightness(0) invert(1);
+  transition: filter 1.4s ease;
+}
+.trailer.is-outro .trailer__header img { filter: brightness(0) invert(.1); }
+@media (max-width: 640px) {
+  .trailer__header { height: 60px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .trailer__header img { transition: none; }
+}
+.trailer__video {
+  position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
+  transform-origin: 50% 62%;                       /* 마지막 장면의 솥 지붕 언덕 쪽으로 천천히 다가간다 */
+  will-change: transform;
+}
+/* 밝은 구름·하늘 위에서도 흰 글자가 읽히도록, 가운데만 살짝 어둡게 */
+.trailer__scrim {
+  position: absolute; inset: 0; pointer-events: none;
+  background:
+    radial-gradient(ellipse 62% 44% at 50% 50%, rgba(46, 28, 36, .42) 0%, rgba(46, 28, 36, .22) 55%, rgba(46, 28, 36, 0) 100%),
+    linear-gradient(to bottom, rgba(29, 18, 24, .18), rgba(29, 18, 24, 0) 22%, rgba(29, 18, 24, 0) 78%, rgba(29, 18, 24, .28));
+}
+
+/* ---------- 자막 ---------- */
+.cues { position: absolute; inset: 0; display: grid; place-items: center; padding: 0 var(--gutter); pointer-events: none; }
+.cue {
+  grid-area: 1 / 1; margin: 0; text-align: center;
+  font-size: clamp(19px, 2.7vw, 42px); font-weight: 600; line-height: 1.55; letter-spacing: -0.03em;
+  word-break: keep-all; text-wrap: balance;
+  text-shadow: 0 1px 3px rgba(46, 28, 36, .45), 0 4px 28px rgba(46, 28, 36, .55);
+  opacity: 0; transform: translateY(14px); filter: blur(8px);
+  transition: opacity var(--fade, .9s) ease-in-out, transform var(--fade, .9s) ease-in-out, filter var(--fade, .9s) ease-in-out;
+  will-change: opacity, transform, filter;
+}
+.cue span { display: block; }
+.cue.is-on  { opacity: 1; transform: translateY(0); filter: blur(0); }
+.cue.is-off { opacity: 0; transform: translateY(-10px); filter: blur(8px); }
+.cue--title .cue__name { margin-top: .12em; font-size: 1.7em; font-weight: 800; letter-spacing: -0.04em; }
+.cue--last span:last-child { font-size: 1.25em; font-weight: 800; }
+
+/* ---------- 버튼 ---------- */
+.tbtn {
+  position: absolute; bottom: max(var(--gutter), env(safe-area-inset-bottom)); z-index: 5;
+  display: inline-flex; align-items: center; gap: 8px; height: 40px; padding: 0 16px;
+  border: 1px solid rgba(255, 255, 255, .55); border-radius: 999px; cursor: pointer;
+  background: rgba(46, 28, 36, .28); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
+  font-size: 14px; font-weight: 600; letter-spacing: -0.01em; opacity: 0; transition: opacity .6s ease, background .2s ease;
+}
+.tbtn.is-shown { opacity: .9; }
+.tbtn:hover, .tbtn:focus-visible { background: rgba(46, 28, 36, .5); opacity: 1; }
+.tbtn:focus-visible, .tstart:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
+.tbtn--skip  { right: max(var(--gutter), env(safe-area-inset-right)); }
+.tbtn--sound { left:  max(var(--gutter), env(safe-area-inset-left)); }
+.tbtn--skip i { font-style: normal; }
+.tbtn--sound .ic-x { display: inline; }
+.tbtn--sound .ic-wave { display: none; }
+.tbtn--sound[aria-pressed="true"] .ic-x { display: none; }
+.tbtn--sound[aria-pressed="true"] .ic-wave { display: inline; }
+
+.tstart {
+  position: absolute; inset: 0; z-index: 6; display: grid; place-items: center; cursor: pointer; border: 0;
+  background: rgba(29, 18, 24, .45); -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px);
+}
+.tstart[hidden], .tbtn[hidden] { display: none; }
+.tstart span {
+  padding: 14px 26px; border: 1px solid rgba(255, 255, 255, .7); border-radius: 999px;
+  font-size: clamp(16px, 2vw, 20px); font-weight: 700; letter-spacing: -0.02em; background: rgba(46, 28, 36, .35);
+}
+
+/* 끝나면 어두워지며 메인 페이지로 */
+.curtain { position: absolute; inset: 0; z-index: 7; background: #1d1218; opacity: 0; pointer-events: none; transition: opacity 1.2s ease; }
+.curtain.is-on { opacity: 1; pointer-events: auto; }
+
+/* ---------- 엔딩 화면: 흰 배경 + 이끼 글자 + 하치 따라가기 ---------- */
+.outro {
+  position: absolute; inset: 0; z-index: 8; background: #fff; color: #5e3248;
+  opacity: 0; visibility: hidden; transition: opacity 1.4s ease, visibility 0s linear 1.4s;
+}
+.outro.is-on { opacity: 1; visibility: visible; transition: opacity 1.4s ease; }
+/* 이끼 글자 캔버스: 화면 전체를 덮고, 마우스·터치를 받아 잔디를 가른다 */
+.outro__canvas { position: absolute; inset: 0; width: 100%; height: 100%; touch-action: none; }
+/* 영상이 안 나올 때만 보이는 대체 글자 */
+.outro__title {
+  position: absolute; inset: 0; margin: 0; display: none; place-items: center; text-align: center;
+  font-size: clamp(56px, 12vw, 190px); font-weight: 900; letter-spacing: -0.04em; color: #7c9a2c;
+}
+.outro.is-fallback .outro__title { display: grid; }
+.outro.is-fallback .outro__canvas { display: none; }
+
+.outro__go {
+  position: absolute; left: 50%; bottom: calc(env(safe-area-inset-bottom, 0px) + clamp(40px, 11vh, 110px)); z-index: 2;
+  display: flex; align-items: center; gap: .8em; padding: 8px 12px; border: 0; background: none; cursor: pointer;
+  color: inherit; white-space: nowrap; font-size: clamp(19px, 1.3vw + 6px, 28px); font-weight: 700; letter-spacing: .01em;
+  opacity: 0; transform: translate(-50%, 10px); pointer-events: none;
+  transition: opacity .9s ease, transform .9s ease;
+}
+.outro__go.is-ready { opacity: 1; transform: translate(-50%, 0); pointer-events: auto; }
+.outro__go:focus-visible { outline: 2px solid currentColor; outline-offset: 6px; border-radius: 12px; }
+/* 글자 옆 세로 알약, 안의 점이 아래로 내려가는 모션 (메인 히어로 버튼과 같은 모양) */
+.outro__go i {
+  position: relative; display: block; flex: none; width: 1.6em; height: 2.8em;
+  border: 2.5px solid currentColor; border-radius: 999px; transition: background-color .25s ease;
+}
+.outro__go:hover i, .outro__go:focus-visible i { background: rgba(94, 50, 72, .12); }
+.outro__go i::after {
+  content: ""; position: absolute; top: .55em; left: 50%; width: .36em; height: .36em; margin-left: -.18em;
+  border-radius: 50%; background: currentColor; animation: outro-dot 1.9s cubic-bezier(.4, 0, .2, 1) infinite;
+}
+@keyframes outro-dot {
+  0% { opacity: 0; transform: translateY(-.15em); }
+  25% { opacity: 1; }
+  70% { opacity: 1; }
+  100% { opacity: 0; transform: translateY(1.05em); }
+}
+/* 엔딩에서는 건너뛰기·소리 버튼을 숨긴다 */
+.trailer.is-outro .tbtn { opacity: 0; pointer-events: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  .outro__go i::after { animation: none; opacity: 1; transform: translateY(.3em); }
+}
+
+@media (max-width: 640px) {
+  .cue { font-size: clamp(17px, 5vw, 22px); }
+  .tbtn { height: 36px; padding: 0 13px; font-size: 13px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .cue, .cue.is-off { transform: none; filter: none; }
+}
